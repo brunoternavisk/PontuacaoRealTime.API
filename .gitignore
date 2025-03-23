@@ -1,0 +1,29 @@
+
+# Build
+bin/
+obj/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# User-specific files
+*.user
+*.vspscc
+*.vssscc
+
+# SQLite database
+pontuacao.db
+pontuacao.db-shm
+pontuacao.db-wal
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+
+# Configurações locais
+appsettings.Development.json
+
+# Outros
+*.DS_Store
+Thumbs.db
