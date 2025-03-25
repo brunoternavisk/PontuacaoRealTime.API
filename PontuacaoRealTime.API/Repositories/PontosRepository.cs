@@ -19,9 +19,20 @@ namespace PontuacaoRealTime.API.Repositories
         {
             var pontosGanhos = (int)(consumo.ValorTotal / 10);
 
-            // 1. Salvar o consumo primeiro
-            await _context.Consumos.AddAsync(consumo);
-            await _context.SaveChangesAsync();
+            // 1. Salvar o consumo primeiro — com proteção contra duplicidade
+            try
+            {
+                await _context.Consumos.AddAsync(consumo);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex) when (
+                ex.InnerException is Microsoft.Data.Sqlite.SqliteException sqliteEx &&
+                sqliteEx.SqliteErrorCode == 19 // constraint violation
+            )
+            {
+                // Retorna status 409 - Conflito
+                throw new InvalidOperationException("Este consumo já foi registrado.");
+            }
 
             // 2. Criar registro no Memorial
             var memorial = new MemorialEntity
@@ -59,6 +70,7 @@ namespace PontuacaoRealTime.API.Repositories
 
             await _context.SaveChangesAsync();
         }
+
         
         public async Task<List<ExtratoPontosDTO>> BuscarExtratoAsync(int pessoaId, DateTime dataLimite)
         {

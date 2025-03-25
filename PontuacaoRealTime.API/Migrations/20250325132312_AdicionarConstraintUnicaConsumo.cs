@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PontuacaoRealTime.API.Migrations
 {
     /// <inheritdoc />
-    public partial class CriarTabelasIniciais : Migration
+    public partial class AdicionarConstraintUnicaConsumo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,6 +63,12 @@ namespace PontuacaoRealTime.API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Consumos_PessoaId_DataConsumo_ValorTotal",
+                table: "Consumos",
+                columns: new[] { "PessoaId", "DataConsumo", "ValorTotal" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Memorial_ConsumoId",

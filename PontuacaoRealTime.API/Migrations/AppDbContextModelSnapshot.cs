@@ -17,7 +17,7 @@ namespace PontuacaoRealTime.API.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
-            modelBuilder.Entity("PontuacaoRealTime.API.Models.Consumo", b =>
+            modelBuilder.Entity("PontuacaoRealTime.API.Domain.Entities.ConsumoEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,10 +34,13 @@ namespace PontuacaoRealTime.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PessoaId", "DataConsumo", "ValorTotal")
+                        .IsUnique();
+
                     b.ToTable("Consumos");
                 });
 
-            modelBuilder.Entity("PontuacaoRealTime.API.Models.Memorial", b =>
+            modelBuilder.Entity("PontuacaoRealTime.API.Domain.Entities.MemorialEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,7 +68,7 @@ namespace PontuacaoRealTime.API.Migrations
                     b.ToTable("Memorial");
                 });
 
-            modelBuilder.Entity("PontuacaoRealTime.API.Models.Pontos", b =>
+            modelBuilder.Entity("PontuacaoRealTime.API.Domain.Entities.PontosEntity", b =>
                 {
                     b.Property<int>("PessoaId")
                         .ValueGeneratedOnAdd()
@@ -85,18 +88,18 @@ namespace PontuacaoRealTime.API.Migrations
                     b.ToTable("Pontos");
                 });
 
-            modelBuilder.Entity("PontuacaoRealTime.API.Models.Memorial", b =>
+            modelBuilder.Entity("PontuacaoRealTime.API.Domain.Entities.MemorialEntity", b =>
                 {
-                    b.HasOne("PontuacaoRealTime.API.Models.Consumo", "Consumo")
+                    b.HasOne("PontuacaoRealTime.API.Domain.Entities.ConsumoEntity", "ConsumoEntity")
                         .WithMany("RegistrosMemorial")
                         .HasForeignKey("ConsumoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Consumo");
+                    b.Navigation("ConsumoEntity");
                 });
 
-            modelBuilder.Entity("PontuacaoRealTime.API.Models.Consumo", b =>
+            modelBuilder.Entity("PontuacaoRealTime.API.Domain.Entities.ConsumoEntity", b =>
                 {
                     b.Navigation("RegistrosMemorial");
                 });
